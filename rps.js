@@ -1,8 +1,5 @@
-function playGame(){
-
     function getComputerChoice() {
         let randomNumber = Math.floor(Math.random() * 3);
-    // console.log (randomNumber);// Debugging in the beginning
      if (randomNumber < 1) {
         return "Rock";
      } else if (randomNumber > 1) {
@@ -11,17 +8,18 @@ function playGame(){
         return "Paper";
      }
     }
-    //console.log (getComputerChoice()); Debugging in the beginning
+
+    let humanScore = 0;
+    let computerScore = 0;
 
     function getHumanChoice() {
         let sign = prompt("Choose your Hand Signal: ");
         return sign.toLowerCase().charAt(0).toUpperCase() + sign.toLowerCase().slice(1);
     }
-    //console.log(getHumanChoice()); Debugging in the beginning
-    let humanScore = 0;
-    let computerScore = 0;
 
     function playRound(humanChoice, computerChoice){
+        humanChoice = humanChoice.toLowerCase().charAt(0).toUpperCase() + humanChoice.toLowerCase().slice(1);
+        computerChoice = computerChoice.toLowerCase().charAt(0).toUpperCase() + computerChoice.toLowerCase().slice(1);
         if (humanChoice === "Paper" && computerChoice === "Scissors") {
             console.log("Computer won the round, Scissors beats Paper");
             computerScore++;
@@ -43,12 +41,58 @@ function playGame(){
         }else {
             console.log("It's a tie round, when you have two similar hand signals!!");
         }
+        return {humanScore, computerScore};
     }    
-    for (let i = 0; i < 5; i++) {  // Exactly 5 rounds
-        const humanSelection= getHumanChoice();
-        const computerSelection = getComputerChoice();
-        playRound(humanSelection, computerSelection);
-        console.log(`Round ${i+1} - Human: ${humanScore}, Computer: ${computerScore}`);
-    }
-}
-playGame();
+    const rockButton = document.querySelector('#rock');
+    const paperButton = document.querySelector('#paper');
+    const scissorsButton = document.querySelector('#scissors');
+
+    rockButton.addEventListener('click', function (event) {
+        const humanChoice = event.target.textContent;
+        const computerChoice = getComputerChoice();
+
+        const scores = playRound(humanChoice, computerChoice);
+
+        document.querySelector('#human-choice').textContent =
+            `You chose: ${humanChoice}`;
+        document.querySelector('#computer-choice').textContent =
+            `Computer chose: ${computerChoice}`;
+        document.querySelector('#scores').textContent =
+            `Human: ${scores.humanScore} | Computer: ${scores.computerScore}`;
+    });
+
+    paperButton.addEventListener('click', function(event){
+        const humanChoice = event.target.textContent;
+        const computerChoice = getComputerChoice();
+
+        const scores = playRound(humanChoice, computerChoice);
+
+        document.querySelector('#human-choice').textContent =
+            `You chose: ${humanChoice}`;
+        document.querySelector('#computer-choice').textContent =
+            `Computer chose: ${computerChoice}`;
+        document.querySelector('#scores').textContent =
+            `Human: ${scores.humanScore} | Computer: ${scores.computerScore}`;
+    });
+    scissorsButton.addEventListener('click', function(event){
+        const humanChoice = event.target.textContent;
+        const computerChoice = getComputerChoice();
+
+        const scores = playRound(humanChoice, computerChoice);
+
+        document.querySelector('#human-choice').textContent =
+            `You chose: ${humanChoice}`;
+        document.querySelector('#computer-choice').textContent =
+            `Computer chose: ${computerChoice}`;
+        document.querySelector('#scores').textContent =
+            `Human: ${scores.humanScore} | Computer: ${scores.computerScore}`;
+    });
+    const resetButton = document.querySelector('#reset');
+
+    resetButton.addEventListener('click', () => {
+        humanScore = 0;
+        computerScore = 0;
+        document.querySelector('#scores').textContent = 'Human: 0 | Computer: 0';
+        document.querySelector('#human-choice').textContent = '';
+        document.querySelector('#computer-choice').textContent = '';
+    });
